@@ -128,8 +128,8 @@ namespace BendTime {
 			
 			CameraEffects.SetSepia(0.0f);
 			
-			if(playEffects)
-				SlowMotionAudio(false);
+			if(!playEffects) return;
+			SlowMotionAudio(false);
 		}
 
 		/// <summary>
@@ -521,7 +521,7 @@ namespace BendTime {
 		}
 
 		/// <summary>
-		/// Unfreeze stabbed item(s) if the thing it's stabbing is unfrozen.
+		/// Unfreeze stabbed item(s) if the thing it's stabbing is unfrozen. Also just freeze any items that are not frozen somehow.
 		/// </summary>
 		[HarmonyPatch(typeof(Item))]
 		[HarmonyPatch("Update")]
