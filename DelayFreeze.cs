@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BendTime {
 	public class DelayFreeze : MonoBehaviour
 	{
-		private float timeToFreeze = 0.2f;
+		public float timeToFreeze = 0.2f;
 
 		private void Update()
 		{
