@@ -11,11 +11,10 @@ namespace BendTime {
 		protected EffectData startData;
 		protected EffectData endData;
 		protected EffectData loopData;
-
-		public EffectInstance loopInstance;
+		
 		public EffectInstance startInstance;
 		public EffectInstance endInstance;
-		
+
 		// ReSharper disable once UnusedMember.Global
 		public SpellBendTime Clone()
 		{
@@ -40,7 +39,8 @@ namespace BendTime {
 
 		public override void Unload() {
 			base.Unload();
-			loopInstance?.Despawn();
+			TimeController.Instance.loopInstance?.End();
+			TimeController.Instance.loopInstance?.Despawn();
 			endInstance?.Despawn();
 			startInstance?.Despawn();
 			
@@ -56,16 +56,16 @@ namespace BendTime {
 			
 			if (TimeController.Instance.IsTimeFrozen) {
 				TimeController.Instance?.UnFreezeTime();
-				loopInstance?.End();
-				loopInstance?.Despawn();
+				TimeController.Instance.loopInstance?.End();
+				TimeController.Instance.loopInstance?.Despawn();
 				endInstance = endData?.Spawn(spellCaster.magic, false, Array.Empty<Type>());
 				endInstance?.Play();
 			} else {
 				TimeController.Instance?.FreezeTime();
 				startInstance = startData?.Spawn(spellCaster.magic, false, Array.Empty<Type>());
 				startInstance?.Play();
-				loopInstance = loopData?.Spawn(spellCaster.magic, false, Array.Empty<Type>());
-				loopInstance?.Play();
+				TimeController.Instance.loopInstance = loopData?.Spawn(spellCaster.magic, false, Array.Empty<Type>());
+				TimeController.Instance.loopInstance?.Play();
 			}
 		}
 	}

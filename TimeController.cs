@@ -12,6 +12,8 @@ namespace BendTime {
 		public EffectInstance slowTimeEffectInstance = null;
 		private EffectData bubbleEffectData;
 		private AnimationCurve bubbleScaleCurveOverTime;
+		
+		public EffectInstance loopInstance;
 
 		/// <summary>
 		/// The instance of this class to be accessed from anywhere
@@ -93,6 +95,9 @@ namespace BendTime {
 			if (!isTimeFrozen)
 				return;
 			isTimeFrozen = false;
+			
+			loopInstance?.End();
+			loopInstance?.Despawn();
 
 			foreach (var item in Item.all)
 			{
@@ -135,9 +140,9 @@ namespace BendTime {
 		/// <param name="gameObject">The item or creatures game object</param>
 		internal void FreezeGameObject(GameObject gameObject)
 		{
-			var interactive = gameObject.GetComponent<Item>();
-			if (interactive != null)
-				FreezeItem(interactive);
+			var item = gameObject.GetComponent<Item>();
+			if (item != null && (item.itemId != "GrooveSlinger.Dishonored.Bolt" || item.itemId != "GrooveSlinger.Dishonored.SleepDart" || item.itemId != "GrooveSlinger.Dishonored.StingBolt"))
+				FreezeItem(item);
 			
 			var creature = gameObject.GetComponent<Creature>();
 			if (creature != null)
@@ -527,7 +532,7 @@ namespace BendTime {
 		internal static class FreezeTeleUnGrabbedInteractiveObjectPatch {
 			[HarmonyPostfix]
 			internal static void Postfix(Item __instance, Handle handle, SpellTelekinesis teleGrabber) {
-				if (Instance.IsTimeFrozen && handle.handlers.Count == 0) {
+				if (Instance.IsTimeFrozen && handle.handlers.Count == 0 && (__instance.itemId != "GrooveSlinger.Dishonored.Bolt" || __instance.itemId != "GrooveSlinger.Dishonored.SleepDart" || __instance.itemId != "GrooveSlinger.Dishonored.StingBolt")) {
 					Instance.FreezeItem(__instance);
 				}
 			}
@@ -541,7 +546,7 @@ namespace BendTime {
 		internal static class FreezeUnGrabbedInteractiveObjectPatch {
 			[HarmonyPostfix]
 			internal static void Postfix(Item __instance, Handle handle, RagdollHand ragdollHand, bool throwing) {
-				if (Instance.IsTimeFrozen) {
+				if (Instance.IsTimeFrozen && (__instance.itemId != "GrooveSlinger.Dishonored.Bolt" || __instance.itemId != "GrooveSlinger.Dishonored.SleepDart" || __instance.itemId != "GrooveSlinger.Dishonored.StingBolt")) {
 					Instance.FreezeItem(__instance);
 				}
 			}
@@ -563,9 +568,9 @@ namespace BendTime {
 				}
 
 				if (__instance.handlers.Count == 0 && __instance.gameObject.GetComponent<DelayFreeze>() == null) {
-					if (__instance.itemId == "GrooveSlinger.Dishonored.Bolt" || __instance.itemId == "GrooveSlinger.Dishonored.SleepDart" ||
-						__instance.itemId == "GrooveSlinger.Dishonored.StingBolt")
+					if (__instance.itemId == "GrooveSlinger.Dishonored.Bolt" || __instance.itemId == "GrooveSlinger.Dishonored.SleepDart" || __instance.itemId == "GrooveSlinger.Dishonored.StingBolt") {
 						Instance.FreezeItem(__instance);
+					}
 				}
 
 				if (__instance.handlers.Count > 0) {
