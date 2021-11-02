@@ -99,13 +99,11 @@ namespace BendTime {
 			loopInstance?.End();
 			loopInstance?.Despawn();
 
-			foreach (var item in Item.all)
-			{
+			foreach (var item in Item.all) {
 				UnFreezeItem(item);
 			}
 
-			foreach (var creature in Creature.all)
-			{
+			foreach (var creature in Creature.all) {
 				creature.ragdoll.physicTogglePlayerRadius = 5f;
 				creature.ragdoll.physicToggleRagdollRadius = 3f;
 				UnFreezeCreature(creature);
@@ -568,7 +566,7 @@ namespace BendTime {
 				}
 
 				if (__instance.handlers.Count == 0 && __instance.gameObject.GetComponent<DelayFreeze>() == null) {
-					if (__instance.itemId == "GrooveSlinger.Dishonored.Bolt" || __instance.itemId == "GrooveSlinger.Dishonored.SleepDart" || __instance.itemId == "GrooveSlinger.Dishonored.StingBolt") {
+					if (__instance.itemId != "GrooveSlinger.Dishonored.Bolt" || __instance.itemId != "GrooveSlinger.Dishonored.SleepDart" || __instance.itemId != "GrooveSlinger.Dishonored.StingBolt") {
 						Instance.FreezeItem(__instance);
 					}
 				}
