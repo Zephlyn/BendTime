@@ -6,6 +6,7 @@ using TotT;
 using ThunderRoad;
 using UnityEngine;
 using Object = System.Object;
+using Utils.ExtensionMethods;
 
 namespace BendTime {
 	public class TimeController {
@@ -207,15 +208,10 @@ namespace BendTime {
 		/// ReSharper disable once MemberCanBeMadeStatic.Global
 		public void FreezeRigidbody(Rigidbody rigidbody)
 		{
-			var data = rigidbody.gameObject.GetComponent<StoredPhysicsData>();
-			if (data == null)
-			{
-				data = rigidbody.gameObject.AddComponent<StoredPhysicsData>();
-			}
-			if (data != null)
-			{
-				data.StoreDataFromRigidBody(rigidbody);
-			}
+			var data = rigidbody.gameObject.GetOrAddComponent<StoredPhysicsData>();
+			if (data == null) return;
+			
+			data.StoreDataFromRigidBody(rigidbody);
 			rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 			rigidbody.useGravity = false;
 		}
@@ -233,11 +229,10 @@ namespace BendTime {
 			rigidbody.constraints = RigidbodyConstraints.None;
 			rigidbody.useGravity = true;
 			rigidbody.ResetInertiaTensor();
-			var data = rigidbody.gameObject.GetComponent<StoredPhysicsData>();
-			if (data == null)
-				data = rigidbody.gameObject.AddComponent<StoredPhysicsData>();
-			if (data != null)
-				data.SetRigidbodyFromStoredData(rigidbody);
+			var data = rigidbody.gameObject.GetOrAddComponent<StoredPhysicsData>();
+			if (data == null) return; 
+			
+			data.SetRigidbodyFromStoredData(rigidbody);
 		}
 
 		/// <summary>
