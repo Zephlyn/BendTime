@@ -294,36 +294,6 @@ namespace BendTime {
 			bubbleEffect?.End();
 		}
 
-		/*
-		[HarmonyPatch(typeof(SpellPowerSlowTime))]
-		[HarmonyPatch("Use")]
-		internal static class TimeFreezePatch {
-			[HarmonyPrefix]
-			internal static bool Prefix(SpellCaster __instance) {
-				if (TimeController.Instance.IsTimeFrozen) {
-					TimeController.Instance.UnFreezeTime();
-				}
-				else {
-					TimeController.Instance.FreezeTime();
-				}
-
-				return false;
-			}
-		}
-		*/
-		
-		/*
-		[HarmonyPatch(typeof(GameManager))]
-		[HarmonyPatch("StopSlowMotion")]
-		internal static class StopFreezePatch {
-			[HarmonyPostfix]
-			internal static void Postfix(GameManager __instance) {
-				TimeController.Instance.UnFreezeTime();
-				TimeController.Instance.SlowMotionAudio(false);
-			}
-		}
-		*/
-
 		/// <summary>
 		/// Manages the audio for starting/stopping
 		/// </summary>
@@ -551,7 +521,7 @@ namespace BendTime {
 		}
 
 		/// <summary>
-		/// i forgot why i did this
+		/// Unfreeze stabbed item(s) if the thing it's stabbing is unfrozen.
 		/// </summary>
 		[HarmonyPatch(typeof(Item))]
 		[HarmonyPatch("Update")]
