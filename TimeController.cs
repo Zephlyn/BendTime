@@ -2,10 +2,8 @@
 using System.Collections;
 using System.Linq;
 using HarmonyLib;
-using TotT;
 using ThunderRoad;
 using UnityEngine;
-using Object = System.Object;
 using Utils.ExtensionMethods;
 
 namespace BendTime {
@@ -241,6 +239,9 @@ namespace BendTime {
 		/// <param name="item">The item to freeze</param>
 		public void FreezeItem(Item item) {
 			// Don't freeze if item is part of the body, being tk'd, or already frozen.
+			if (item.itemId == "GrooveSlinger.Dishonored.Bolt" ||
+				item.itemId == "GrooveSlinger.Dishonored.SleepDart" ||
+				item.itemId == "GrooveSlinger.Dishonored.StingBolt") return;
 			if (item.data.type == ItemData.Type.Body || item.isTelekinesisGrabbed || item.rb.constraints == RigidbodyConstraints.FreezeAll) return;
 
 			// Don't freeze things held by the player
@@ -642,18 +643,6 @@ namespace BendTime {
 				
 				Instance.UnFreezeItem(__instance.nockedArrow);
 				__instance.nockedArrow.gameObject.AddComponent<DelayFreeze>();
-			}
-		}
-
-		[HarmonyPatch(typeof(CrossbowModule))]
-		[HarmonyPatch("ShootBolt")]
-		internal static class FreezeCrossbowBoltPatch {
-			[HarmonyPrefix]
-			internal static void Prefix(CrossbowModule __instance, Item ___bolt) {
-				if (!Instance.IsTimeFrozen) return;
-				if (!___bolt) return;
-
-				___bolt.gameObject.AddComponent<DelayFreeze>();
 			}
 		}
 	}

@@ -120,5 +120,3 @@ D:\halt\BendTime\bin\Debug\ThunderRoad.pdb
 D:\halt\BendTime\bin\Debug\ThunderRoad.Plugins.pdb
 D:\halt\BendTime\bin\Debug\RainyReignGames.PrefabBakedLighting.pdb
 D:\halt\BendTime\bin\Debug\RainyReignGames.Collections.pdb
-D:\halt\BendTime\bin\Debug\TotT.dll
-D:\halt\BendTime\bin\Debug\TotT.pdb

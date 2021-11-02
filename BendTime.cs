@@ -8,7 +8,7 @@ using UnityEngine;
 namespace BendTime {
 	public class BendTime : LevelModule {
 		public bool DebugMode = true;
-		public int FocusConsumption = 2f;
+		public float FocusConsumption = 2f;
 
 		/// <summary>
 		/// Starts freeze controller
