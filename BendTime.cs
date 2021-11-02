@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Collections;
 using System.Reflection;
@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace BendTime {
 	public class BendTime : LevelModule {
+		public bool DebugMode = true;
+		public int FocusConsumption = 2f;
 
 		/// <summary>
 		/// Starts freeze controller
@@ -17,6 +19,10 @@ namespace BendTime {
 			try {
 				harmony = new Harmony("BendTime");
 				harmony.PatchAll(Assembly.GetExecutingAssembly());
+				
+				if(DebugMode)
+					Debug.Log($"Focus consumption set to {FocusConsumption}");
+				
 				Debug.Log("Bend Time successfully loaded!");
 			} catch (Exception exception) {
 				Debug.LogException(exception);
@@ -29,9 +35,8 @@ namespace BendTime {
 			if (!TimeController.Instance.IsTimeFrozen) return;
 			
 			TimeController.Instance.slowTimeEffectInstance?.SetIntensity(Mathf.InverseLerp(Player.local.creature.mana.maxFocus, 0.0f, Player.local.creature.mana.currentFocus));
-			if (!Player.local.creature.mana.ConsumeFocus(2f * Time.deltaTime)) {
+			if (!Player.local.creature.mana.ConsumeFocus(FocusConsumption * Time.deltaTime))
 				TimeController.Instance.UnFreezeTime();
-			}
 		}
 	}
 }
